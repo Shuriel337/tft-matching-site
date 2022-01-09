@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head>
+  <title>롤체 매칭 카운팅</title>
+  <meta charset="utf-8">
+</head>
+<body>
+  <script>
+    var people=new Array();
+    var count_d={};
+  </script>
+  <h1>전체 인원 입력(띄어쓰기로 구분)(자신 제외)</h1>
+  <input id="i1">
+  <button type="button" onclick="i_p()">완료</button>
+  <script>
+      function i_p(){
+        x=document.getElementById("i1").value;
+        people=x.split(" ");
+        for(var i=0;i<people.length;i++){
+          count_d[people[i]]=0;
+        }
+      }
+  </script>
+  <form>
+    <h1>만난 사람 입력(1명씩)</h1>
+    <input id="i2">
+    <input type="reset" onclick="i_v()" value="입력">
+    <p id="print1"></p>
+  </form>
+  <script>
+    function i_v(){
+      y=document.getElementById("i2").value;
+      if(exist(y)){
+        for(var i=0;i<Object.keys(count_d).length;i++){
+          if(people[i]==y)
+            count_d[y]=0;
+          else
+            count_d[people[i]]+=1;
+        }
+      }
+      else{
+        document.getElementById("print1").innerHTML="잘못된 입력입니다."
+      }
+    }
+    function exist(y){
+      for(var i=0;i<Object.keys(count_d).length;i++){
+        if(people[i]==y)
+          return true;
+      }
+      return false;
+    }
+  </script>
+  <form>
+    <h1>탈락한 사람 입력(1명씩)</h1>
+    <input id="i3">
+    <input type="reset" onclick="i_d()" value="입력">
+    <p id="print2"></p>
+  </form>
+  <script>
+    function i_d(){
+      z=document.getElementById("i3").value;
+      if(exist(z)){
+        for(var i=0;i<Object.keys(count_d).length;i++){
+          if(people[i]==z){
+            delete count_d[z];
+          }
+        }
+      }
+      else{
+        document.getElementById("print2").innerHTML="잘못된 입력입니다."
+      }
+    }
+    function exist(z){
+      for(var i=0;Object.keys(count_d).length;i++){
+        if(people[i]==z)
+          return true;
+      }
+      return false;
+    }
+  </script>
+  <h1 style="display:inline">만날 사람 후보(순방한 후에는 의미 없음)</h1>
+  <button type="button" onclick="p_p()">확인</button>
+  <p id="print3"></p>
+  <script>
+    function p_p(){
+      var sortable=[];
+      for(var name in count_d){
+        sortable.push([name, count_d[name]]);
+      }
+      sortable.sort(function(a, b){return b[1]-a[1]});
+      var predict=[];
+      for(var i=0;i<3;i++){
+        predict.push(sortable[i][0]);
+      }
+      document.getElementById("print3").innerHTML=predict[0]+" "+predict[1]+" "+predict[2];
+    }
+  </script>
+</body>
+</html>
